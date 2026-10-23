@@ -1,0 +1,19 @@
+en
+conf t
+ho R1
+no ip domain-lookup
+int l0
+ip add 1.1.1.1 255.255.255.255
+no shut
+int f0/0
+ip add 10.0.1.2 255.255.255.252
+no shut
+int f1/0
+ip add 10.0.2.2 255.255.255.252
+no shut
+ex
+ip route 10.1.0.0 255.255.255.0 10.0.1.1
+ip route 10.1.0.0 255.255.255.0 10.0.2.1 5
+ip route 10.2.0.0 255.255.255.0 10.0.2.1
+ip route 10.2.0.0 255.255.255.0 10.0.1.1 5
+do copy run start

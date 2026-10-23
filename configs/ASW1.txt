@@ -1,0 +1,20 @@
+en
+conf t
+ho ASW1
+no ip domain-lookup
+int range f0/3-4
+switchport mode access
+switchport access vlan 10
+ex
+int range f0/1-2
+switchport mode trunk
+switchport trunk allowed vlan 10
+switchport trunk native vlan 99
+ex
+ip dhcp snooping
+ip dhcp snooping vlan 10
+int f0/1
+ip dhcp snooping trust
+no ip dhcp snooping information option
+ex
+do copy run start

@@ -1,0 +1,60 @@
+en
+conf t
+ho DSW1
+no ip domain-lookup
+ip routing
+int range f0/1-4
+no sw
+channel-group 1 mode on
+int po1
+ip add 10.0.0.1 255.255.255.252
+no shut
+int f0/5
+switchport trunk encapsulation dot1q
+switchport mode trunk
+switchport trunk allowed vlan 10
+switchport trunk native vlan 99
+int f0/6
+switchport trunk encapsulation dot1q
+switchport mode trunk
+switchport trunk allowed vlan 20
+switchport trunk native vlan 99
+ex
+vlan 10
+vlan 20
+int vlan 10
+ip add 10.1.0.1 255.255.255.0
+no shut
+standby ver 2
+standby 10 ip 10.1.0.254
+standby 10 priority 150
+standby 10 preempt
+ex
+int vlan 20
+ip add 10.2.0.1 255.255.255.0
+no shut
+standby ver 2
+standby 20 ip 10.2.0.254
+standby 20 priority 50
+standby 20 preempt
+ex
+ip dhcp exclude 10.1.0.1 10.1.0.10
+ip dhcp exclude 10.2.0.1 10.2.0.10
+ip dhcp pool POOL1
+network 10.1.0.0 255.255.255.0
+default-router 10.1.0.254
+domain-name sean.com
+ex
+ip dhcp pool POOL2
+network 10.2.0.0 255.255.255.0
+default-router 10.2.0.254
+domain-name sean.com
+ex
+int g0/1
+no sw
+ip add 10.0.1.1 255.255.255.252
+no shut
+ex
+ip route 0.0.0.0 0.0.0.0 10.0.1.2
+ip route 0.0.0.0 0.0.0.0 10.0.0.2 10
+do copy run start
